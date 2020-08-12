@@ -1,0 +1,93 @@
+<html>
+
+<body>
+<div style="width:900px;">
+    <p>
+        <img class="" src="http://49.235.189.36:9000/模板1.png" style="width: 900px">
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <strong><span style="font-size:15px;color:#0B0B0B;">${name}：</span></strong>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;您好！</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;首先非常感谢您对${companyName}的关注！我们已经仔细查阅过您的简历，经过初步评估，认为您非常合公司的职位要求。</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;现邀请您到我公司参加面试，届时请带上个人作品准时参加。如有任何问题可随时与我联系！谢谢！</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;<strong>面试职位：</strong>${position}</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <strong><span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;面试时间：</span></strong><span style="font-size:15px;color:#0B0B0B;">${interviewTime}</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;<strong>&nbsp;公司官网：</strong>http://49.235.189.36</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;<strong>微信公众号：</strong>&nbsp;测试</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <strong><span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;岗位薪资福利：</span></strong>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">（1）${salary}；</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">（2）社保齐全，外加各种生日礼金、结婚礼金、宝宝礼金、节日慰问礼品等；</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">（3）每天工作7.5小时，双休+国家法定节假日+带薪年假5-15天+带薪暑假+带薪考试假+带薪病假+带薪儿童节假期+不定期旅游、拓展活动；</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">（4）一系列的激励晋升机制和提升发展空间，各种带薪专业培训和培训津贴，为您打造一个良好的学习平台；</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">（5）高素质、专业化的工作团队，优美整洁的办公环境，融洽和谐的工作氛围为您提供良好的工作环境。</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;如不能准时到达请致电人事部：${phone}或直接回复邮件告知，以便我们重新安排面试时间。谢谢配合！</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <strong><span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;具体联系方式如下：</span></strong>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;<strong>地址：</strong>${address}</span>
+    </p>
+    #*<p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;温馨提示：（附近建筑：——）</span>
+    </p>*#
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;公交车站：${busRoutes}</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;地铁站：${subwayRoutes}</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;如果不清楚线路可到高德地图查询线路。</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;杭州旗捷科技有限公司期待您的加入！</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+	<span style="font-size:15px;color:#0B0B0B;"><br>
+</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:right;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp; &nbsp;杭州旗捷科技有限公司人力资源部</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:right;">
+        <span style="font-size:15px;color:#0B0B0B;">日期：${currentTime}</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:right;">
+        <span style="font-size:15px;color:#0B0B0B;">公司电话：${tel}</span>
+    </p>
+    <p style="text-align:justify;margin-left:0.5em;">
+        <span style="font-size:15px;"></span>
+    </p>
+</div>
+</body>
+
+</html>

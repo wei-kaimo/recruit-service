@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrUserDepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrUserDepartment" >
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="department_id" property="departmentId" jdbcType="INTEGER" />
+    <result column="duty_id" property="dutyId" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="integer">
+    select user_id, department_id, duty_id from hr_user_department where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+    <select id="selectDepartmentSuperiorByUserId" resultType="java.lang.Integer" parameterType="integer">
+      select user_id from hr_user_department a , hr_duty b
+      WHERE a.duty_id = b.duty_id
+      and right(b.duty_hierarchy,3) in ('001','000')
+      and a.department_id =
+      (SELECT parent_department_id from hr_department c , hr_user_department d
+      WHERE c.department_id = d.department_id and d.user_id = #{userId,jdbcType=INTEGER})
+    </select>
+  <select id="selectManagerId" resultType="integer">
+    select a.user_id from hr_user a , hr_user_department b,hr_user_role c where
+    a.user_id = b.user_id and a.user_id = c.user_id and c.role_id = '3' and
+    b.department_id = '105'
+  </select>
+  <select id="selectSuperiorByUserId" resultType="java.lang.Integer" parameterType="integer">
+    select user_id from hr_user_department a , hr_duty b
+    WHERE a.duty_id = b.duty_id and right(b.duty_hierarchy,3) in ('001','000')
+    and a.department_id =
+    (SELECT department_id FROM hr_user_department  where user_id = #{userId,jdbcType=INTEGER})
+  </select>
+  <insert id="insert" parameterType="com.system.recruit.entity.HrUserDepartment" >
+    insert into hr_user_department (user_id, department_id, duty_id
+      )
+    values (#{userId,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, #{dutyId,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <delete id="deleteByUserId" parameterType="integer">
+    delete from hr_user_department
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.system.recruit.entity.HrUserDepartment" >
+    insert into hr_user_department
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="departmentId != null" >
+        department_id,
+      </if>
+      <if test="dutyId != null" >
+        duty_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="dutyId != null" >
+        #{dutyId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateSelective" parameterType="com.system.recruit.entity.HrUserDepartment" >
+    update hr_user_department
+    <set >
+      <if test="departmentId != null" >
+        department_id = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="dutyId != null" >
+        duty_id = #{dutyId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

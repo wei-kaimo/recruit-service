@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrResumeMapper">
+    <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrResume">
+        <id column="resume_id" property="resumeId" jdbcType="VARCHAR"/>
+        <result column="position_id" property="positionId" jdbcType="VARCHAR"/>
+        <result column="resume_file" property="resumeFile" jdbcType="VARCHAR"/>
+        <result column="candidates_name" property="candidatesName" jdbcType="VARCHAR"/>
+        <result column="native_place" property="nativePlace" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="e_mail" property="eMail" jdbcType="VARCHAR"/>
+        <result column="years_of_working" property="yearsOfWorking" jdbcType="VARCHAR"/>
+        <result column="education" property="education" jdbcType="VARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="GetResumeContentMap" type="com.system.recruit.entity.GetResumeContent">
+        <id column="resume_id" property="resumeId" jdbcType="VARCHAR"/>
+        <result column="position_id" property="positionId" jdbcType="VARCHAR"/>
+        <result column="resume_file" property="resumeFile" jdbcType="VARCHAR"/>
+        <result column="candidates_name" property="candidatesName" jdbcType="VARCHAR"/>
+        <result column="native_place" property="nativePlace" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="e_mail" property="eMail" jdbcType="VARCHAR"/>
+        <result column="years_of_working" property="yearsOfWorking" jdbcType="VARCHAR"/>
+        <result column="education" property="education" jdbcType="VARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+        <collection property="workExperienceList" column="resume_id" javaType="java.util.List"
+                    ofType="com.system.recruit.entity.HrWorkExperience" select="getWorkExperienceList"/>
+        <collection property="hrEducationalBackgroundList" column="resume_id" javaType="java.util.List"
+                    ofType="com.system.recruit.entity.HrEducationalBackground" select="getEducationalBackgroundList"/>
+    </resultMap>
+
+    <resultMap id="HrWorkExperienceMap" type="com.system.recruit.entity.HrWorkExperience" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="resume_id" property="resumeId" jdbcType="VARCHAR" />
+        <result column="start_time" property="startTime" jdbcType="VARCHAR" />
+        <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+        <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+        <result column="position_name" property="positionName" jdbcType="VARCHAR" />
+        <result column="job_description" property="jobDescription" jdbcType="VARCHAR" />
+        <result column="project_experience" property="projectExperience" jdbcType="VARCHAR" />
+        <result column="project_num" property="projectNum" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="HrEducationalBackgroundMap" type="com.system.recruit.entity.HrEducationalBackground" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="resume_id" property="resumeId" jdbcType="VARCHAR" />
+        <result column="start_time" property="startTime" jdbcType="VARCHAR" />
+        <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+        <result column="going" property="going" jdbcType="VARCHAR" />
+        <result column="school_name" property="schoolName" jdbcType="VARCHAR" />
+        <result column="education" property="education" jdbcType="VARCHAR" />
+        <result column="major" property="major" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+    resume_id, position_id, resume_file, candidates_name, native_place, age,sex, phone_number,
+    e_mail, years_of_working, education, source, create_date, update_date
+  </sql>
+    <sql id="WorkExperienceList_List" >
+    id, resume_id, start_time, end_time, company_name, position_name, job_description,
+    project_experience, project_num, create_date, update_date
+  </sql>
+
+    <sql id="getEducationalBackgroundList_List" >
+    id, resume_id, start_time, end_time, going, school_name, education, major, create_date,
+    update_date
+  </sql>
+    <select id="getEducationalBackgroundList" resultMap="HrEducationalBackgroundMap" parameterType="java.lang.String" >
+        select
+        <include refid="getEducationalBackgroundList_List" />
+        from hr_educational_background
+        where resume_id = #{resumeId,jdbcType=VARCHAR}
+    </select>
+    <select id="getWorkExperienceList" resultMap="HrWorkExperienceMap" parameterType="java.lang.String" >
+        select
+        <include refid="WorkExperienceList_List" />
+        from hr_work_experience
+        where resume_id = #{resumeId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from hr_resume
+        where resume_id = #{resumeId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap"
+            parameterType="com.system.recruit.entity.info.GetResumeByConditionReq">
+    select
+    a.resume_id, a.position_id, a.resume_file, a.candidates_name, a.native_place, a.age,sex, a.phone_number,
+    a.e_mail, a.years_of_working, a.education, a.source, a.create_date, a.update_date
+    from hr_resume a
+    where a.position_id = #{positionId,jdbcType=VARCHAR}
+    and a.resume_id not  in
+    (select b.resume_id from hr_request_resume b where b.request_id = #{requestId,jdbcType=VARCHAR})
+  </select>
+    <select id="selectByKeywords" resultType="int" parameterType="com.system.recruit.entity.info.AddResumeReq">
+    select
+    count(1)
+    from hr_resume a
+    where a.position_id = #{positionId,jdbcType=VARCHAR}
+    and a.candidates_name = #{candidatesName,jdbcType=VARCHAR}
+    and a.phone_number = #{phoneNumber,jdbcType=VARCHAR}
+    and a.e_mail = #{eMail,jdbcType=VARCHAR}
+    </select>
+    <select id="selectAllByCondition" resultMap="GetResumeContentMap" parameterType="com.system.recruit.entity.HrResume">
+        select
+        <include refid="Base_Column_List"/>
+        from hr_resume
+        <trim prefix="where" suffixOverrides="and">
+            <if test="resumeId != null and resumeId != '' ">
+                resume_id like CONCAT('%',#{resumeId,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="resumeId == null or resumeId == '' ">
+                <if test="positionId != null and positionId != '' ">
+                    position_id = #{positionId,jdbcType=VARCHAR} and
+                </if>
+                <if test="resumeFile != null and resumeFile != '' ">
+                    resume_file like CONCAT('%',#{resumeFile,jdbcType=VARCHAR},'%') and
+                </if>
+                <if test="candidatesName != null and candidatesName != '' ">
+                    candidates_name like CONCAT('%',#{candidatesName,jdbcType=VARCHAR},'%')  and
+                </if>
+                <if test="nativePlace != null and nativePlace != '' ">
+                    native_place like CONCAT('%',#{nativePlace,jdbcType=VARCHAR},'%')   and
+                </if>
+                <if test="age != null and age != '' ">
+                    age like CONCAT('%',#{age,jdbcType=VARCHAR},'%')  and
+                </if>
+                <if test="sex != null and sex != '' ">
+                    sex like CONCAT('%',#{sex,jdbcType=VARCHAR},'%') and
+                </if>
+                <if test="phoneNumber != null and phoneNumber != '' ">
+                    phone_number like CONCAT('%',#{phoneNumber,jdbcType=VARCHAR},'%') and
+                </if>
+                <if test="eMail != null and eMail != '' ">
+                    e_mail like CONCAT('%',#{eMail,jdbcType=VARCHAR},'%') and
+                </if>
+                <if test="yearsOfWorking != null and yearsOfWorking != '' ">
+                    years_of_working like CONCAT('%',#{yearsOfWorking,jdbcType=VARCHAR},'%') and
+                </if>
+                <if test="education != null and education != '' ">
+                    education like CONCAT('%',#{education,jdbcType=VARCHAR},'%') and
+                </if>
+                <if test="source != null and source != '' ">
+                    source like CONCAT('%',#{source,jdbcType=VARCHAR},'%') and
+                </if>
+            </if>
+        </trim>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from hr_resume
+    where resume_id = #{resumeId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.system.recruit.entity.HrResume">
+    insert into hr_resume (resume_id, position_id, resume_file, 
+      candidates_name, native_place, age, sex,
+      phone_number, e_mail, years_of_working, 
+      education, source, create_date, 
+      update_date)
+    values (#{resumeId,jdbcType=VARCHAR}, #{positionId,jdbcType=VARCHAR}, #{resumeFile,jdbcType=VARCHAR}, 
+      #{candidatesName,jdbcType=VARCHAR}, #{nativePlace,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},
+      #{phoneNumber,jdbcType=VARCHAR}, #{eMail,jdbcType=VARCHAR}, #{yearsOfWorking,jdbcType=VARCHAR}, 
+      #{education,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertByAddResumeReq" parameterType="com.system.recruit.entity.info.AddResumeReq">
+        insert into hr_resume
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resumeId != null">
+                resume_id,
+            </if>
+            <if test="positionId != null">
+                position_id,
+            </if>
+            <if test="resumeFile != null">
+                resume_file,
+            </if>
+            <if test="candidatesName != null">
+                candidates_name,
+            </if>
+            <if test="nativePlace != null">
+                native_place,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="phoneNumber != null">
+                phone_number,
+            </if>
+            <if test="eMail != null">
+                e_mail,
+            </if>
+            <if test="yearsOfWorking != null">
+                years_of_working,
+            </if>
+            <if test="education != null">
+                education,
+            </if>
+            <if test="source != null">
+                source,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resumeId != null">
+                #{resumeId,jdbcType=VARCHAR},
+            </if>
+            <if test="positionId != null">
+                #{positionId,jdbcType=VARCHAR},
+            </if>
+            <if test="resumeFile != null">
+                #{resumeFile,jdbcType=VARCHAR},
+            </if>
+            <if test="candidatesName != null">
+                #{candidatesName,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlace != null">
+                #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="eMail != null">
+                #{eMail,jdbcType=VARCHAR},
+            </if>
+            <if test="yearsOfWorking != null">
+                #{yearsOfWorking,jdbcType=VARCHAR},
+            </if>
+            <if test="education != null">
+                #{education,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertSelective" parameterType="com.system.recruit.entity.HrResume">
+        insert into hr_resume
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resumeId != null">
+                resume_id,
+            </if>
+            <if test="positionId != null">
+                position_id,
+            </if>
+            <if test="resumeFile != null">
+                resume_file,
+            </if>
+            <if test="candidatesName != null">
+                candidates_name,
+            </if>
+            <if test="nativePlace != null">
+                native_place,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="phoneNumber != null">
+                phone_number,
+            </if>
+            <if test="eMail != null">
+                e_mail,
+            </if>
+            <if test="yearsOfWorking != null">
+                years_of_working,
+            </if>
+            <if test="education != null">
+                education,
+            </if>
+            <if test="source != null">
+                source,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resumeId != null">
+                #{resumeId,jdbcType=VARCHAR},
+            </if>
+            <if test="positionId != null">
+                #{positionId,jdbcType=VARCHAR},
+            </if>
+            <if test="resumeFile != null">
+                #{resumeFile,jdbcType=VARCHAR},
+            </if>
+            <if test="candidatesName != null">
+                #{candidatesName,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlace != null">
+                #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="eMail != null">
+                #{eMail,jdbcType=VARCHAR},
+            </if>
+            <if test="yearsOfWorking != null">
+                #{yearsOfWorking,jdbcType=VARCHAR},
+            </if>
+            <if test="education != null">
+                #{education,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrResume">
+        update hr_resume
+        <set>
+            <if test="positionId != null">
+                position_id = #{positionId,jdbcType=VARCHAR},
+            </if>
+            <if test="resumeFile != null">
+                resume_file = #{resumeFile,jdbcType=VARCHAR},
+            </if>
+            <if test="candidatesName != null">
+                candidates_name = #{candidatesName,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlace != null">
+                native_place = #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                age = #{age,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                phone_number = #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="eMail != null">
+                e_mail = #{eMail,jdbcType=VARCHAR},
+            </if>
+            <if test="yearsOfWorking != null">
+                years_of_working = #{yearsOfWorking,jdbcType=VARCHAR},
+            </if>
+            <if test="education != null">
+                education = #{education,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                source = #{source,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = NOW()
+            </if>
+        </set>
+        where resume_id = #{resumeId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrResume">
+    update hr_resume
+    set position_id = #{positionId,jdbcType=VARCHAR},
+      resume_file = #{resumeFile,jdbcType=VARCHAR},
+      candidates_name = #{candidatesName,jdbcType=VARCHAR},
+      native_place = #{nativePlace,jdbcType=VARCHAR},
+      age = #{age,jdbcType=VARCHAR},
+      phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      e_mail = #{eMail,jdbcType=VARCHAR},
+      years_of_working = #{yearsOfWorking,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      update_date = NOW()
+    where resume_id = #{resumeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrUserMapper" >
+  <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrUser" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="user_real_name" property="userRealName" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user_qq" property="userQQ" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="VARCHAR" />
+    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="UserOutlineMap" type="com.system.recruit.entity.UserOutline" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="user_real_name" property="userRealName" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user_qq" property="userQQ" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="VARCHAR" />
+    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+    <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
+    <result column="duty_name" property="dutyName" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="UserParticularsMap" type="com.system.recruit.entity.UserParticulars" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="user_real_name" property="userRealName" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user_qq" property="userQQ" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="VARCHAR" />
+    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+    <result column="department_id" property="departmentId" jdbcType="INTEGER" />
+    <result column="duty_id" property="dutyId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_account, user_pwd, user_real_name, user_phone, user_qq, user_email, user_sex,
+    user_address, create_date, update_date
+  </sql>
+
+  <select id="getUserOutline" resultMap="UserOutlineMap">
+    SELECT
+    a.user_id as user_id,
+    a.user_account as user_account,
+    a.user_real_name as user_real_name,
+    a.user_phone as user_phone,
+    a.user_qq as user_qq,
+    a.user_email as user_email,
+    a.user_sex as user_sex,
+    a.user_address as user_address,
+    c.department_name as department_name,
+    d.duty_name as duty_name
+    FROM hr_user a,hr_user_department b,hr_department c , hr_duty d WHERE a.user_id = b.user_id AND b.department_id = c.department_id AND
+    b.duty_id = d.duty_id
+  </select>
+  <select id="getUserParticulars" parameterType="integer" resultMap="UserParticularsMap">
+    SELECT
+    a.user_id as user_id,
+    a.user_account as user_account,
+    a.user_real_name as user_real_name,
+    a.user_phone as user_phone,
+    a.user_qq as user_qq,
+    a.user_email as user_email,
+    a.user_sex as user_sex,
+    a.user_address as user_address,
+    b.department_id as department_id,
+    b.duty_id as duty_id,
+    c.role_id as role_id,
+    a.create_date as create_date,
+    a.update_date as update_date
+    FROM hr_user a,hr_user_department b, hr_user_role c WHERE
+    a.user_id = b.user_id AND b.user_id = a.user_id AND c.user_id = a.user_id
+    AND a.user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="getUserByUserAccount" parameterType="String" resultType="com.system.recruit.entity.HrUser">
+    SELECT*FROM hr_user a,hr_role b,hr_user_role c , hr_user_department d WHERE a.user_id = c.user_id AND b.role_id = c.role_id AND
+    a.user_id = d.user_id AND a.user_account = #{userAccount}
+  </select>
+  <select id="getAllUser" parameterType="String" resultType="com.system.recruit.entity.HrUser">
+    SELECT*FROM hr_user a,hr_role b,hr_user_role c , hr_user_department d WHERE a.user_id = c.user_id AND b.role_id = c.role_id AND
+    a.user_id = d.user_id
+  </select>
+
+  <select id="getUserByDepartmentId" parameterType="String" resultMap="UserOutlineMap">
+    SELECT
+    a.user_id as user_id,
+    a.user_account as user_account,
+    a.user_real_name as user_real_name,
+    a.user_phone as user_phone,
+    a.user_qq as user_qq,
+    a.user_email as user_email,
+    a.user_sex as user_sex,
+    a.user_address as user_address
+    FROM hr_user a , hr_user_department b WHERE a.user_id = b.user_id and b.department_id = #{departmentId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="gerUserListByRoleId" resultType="com.system.recruit.entity.info.UserResp" parameterType="list">
+    select a.* from hr_user a , hr_user_role b where a.user_id = b.user_id and
+    b.role_id in
+    <foreach  item="item" collection="roleIds" index="index"  open="(" separator="," close=")">
+    #{item}
+  </foreach>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hr_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.system.recruit.entity.HrUser" >
+    insert into hr_user (user_id, user_account, user_pwd,
+      user_real_name, user_phone, user_qq,
+      user_email, user_sex, user_address,
+      create_date, update_date)
+    values (#{userId,jdbcType=INTEGER}, #{userAccount,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR},
+      #{userRealName,jdbcType=VARCHAR}, #{userPhone,jdbcType=VARCHAR}, #{userQQ,jdbcType=VARCHAR},
+      #{userEmail,jdbcType=VARCHAR}, #{userSex,jdbcType=VARCHAR}, #{userAddress,jdbcType=VARCHAR},
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys = "true" keyProperty = "userId" parameterType="com.system.recruit.entity.HrUser" >
+    insert into hr_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userAccount != null" >
+        user_account,
+      </if>
+      <if test="userPwd != null" >
+        user_pwd,
+      </if>
+      <if test="userRealName != null" >
+        user_real_name,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
+      </if>
+      <if test="userQQ != null" >
+        user_qq,
+      </if>
+      <if test="userEmail != null" >
+        user_email,
+      </if>
+      <if test="userSex != null" >
+        user_sex,
+      </if>
+      <if test="userAddress != null" >
+        user_address,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userAccount != null" >
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userRealName != null" >
+        #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userQQ != null" >
+        #{userQQ,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        #{userSex,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null" >
+        #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrUser" >
+    update hr_user
+    <set >
+      <if test="userAccount != null" >
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userRealName != null" >
+        user_real_name = #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userQQ != null" >
+        user_qq = #{userQQ,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        user_sex = #{userSex,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null" >
+        user_address = #{userAddress,jdbcType=VARCHAR},
+      </if>
+        update_date = now()
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrUser" >
+    update hr_user
+    set user_account = #{userAccount,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      user_real_name = #{userRealName,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_qq = #{userQQ,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_sex = #{userSex,jdbcType=VARCHAR},
+      user_address = #{userAddress,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

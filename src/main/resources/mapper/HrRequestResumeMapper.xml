@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrRequestResumeMapper">
+    <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrRequestResume">
+        <id column="resume_id" property="resumeId" jdbcType="VARCHAR"/>
+        <result column="request_id" property="requestId" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="taster" property="taster" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="RestCorrectResumeMap" type="com.system.recruit.entity.RestCorrectResumeByCondition">
+        <id column="resume_id" property="resumeId" jdbcType="VARCHAR"/>
+        <result column="position_id" property="positionId" jdbcType="VARCHAR"/>
+        <result column="resume_file" property="resumeFile" jdbcType="VARCHAR"/>
+        <result column="candidates_name" property="candidatesName" jdbcType="VARCHAR"/>
+        <result column="native_place" property="nativePlace" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="e_mail" property="eMail" jdbcType="VARCHAR"/>
+        <result column="years_of_working" property="yearsOfWorking" jdbcType="VARCHAR"/>
+        <result column="education" property="education" jdbcType="VARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="request_id" property="requestId" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="taster" property="taster" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    resume_id, request_id, sort, taster, state, remark, create_date, update_date
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from hr_request_resume
+        where resume_id = #{resumeId,jdbcType=VARCHAR}
+    </select>
+    <select id="getCorrectResumeByCondition" resultMap="RestCorrectResumeMap"
+            parameterType="com.system.recruit.entity.RestCorrectResumeByCondition">
+        select
+        a.resume_id, a.position_id, a.resume_file, a.candidates_name, a.native_place, a.age, a.sex,
+        a.phone_number, a.e_mail, a.years_of_working, a.education, a.source, b.request_id, b.sort,
+        b.taster, b.state, b.remark, b.create_date, b.update_date
+        from hr_resume a, hr_request_resume b
+        where a.resume_id = b.resume_id
+            <if test="requestId != null and requestId != '' ">
+                and b.request_id = #{requestId,jdbcType=VARCHAR}
+            </if>
+            <if test="resumeId != null and resumeId != '' ">
+                and b.resume_id = #{resumeId,jdbcType=VARCHAR}
+            </if>
+            <if test="sort != null and sort != '' ">
+                and b.sort = #{sort,jdbcType=INTEGER}
+            </if>
+            <if test="taster != null and taster != '' ">
+                and b.taster = #{taster,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null and state != '' ">
+                and b.state = #{state,jdbcType=VARCHAR}
+            </if>
+        order by b.sort
+    </select>
+    <select id="getCountById" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    count(1)
+    from hr_request_resume
+    where resume_id = #{resumeId,jdbcType=VARCHAR}
+  </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from hr_request_resume
+    where resume_id = #{resumeId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.system.recruit.entity.HrRequestResume">
+    insert into hr_request_resume (resume_id, request_id, sort, 
+      taster, state, remark, 
+      create_date, update_date)
+    values (#{resumeId,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
+      #{taster,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.system.recruit.entity.HrRequestResume">
+        insert into hr_request_resume
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resumeId != null">
+                resume_id,
+            </if>
+            <if test="requestId != null">
+                request_id,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="taster != null">
+                taster,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            create_date,
+            update_date,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resumeId != null">
+                #{resumeId,jdbcType=VARCHAR},
+            </if>
+            <if test="requestId != null">
+                #{requestId,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="taster != null">
+                #{taster,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            now(),
+            now(),
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrRequestResume">
+        update hr_request_resume
+        <set>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="taster != null">
+                taster = #{taster,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where resume_id = #{resumeId,jdbcType=VARCHAR} and request_id = #{requestId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrRequestResume">
+    update hr_request_resume
+    set request_id = #{requestId,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      taster = #{taster,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where resume_id = #{resumeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

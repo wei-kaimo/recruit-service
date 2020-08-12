@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrRecruitRequestMapper">
+    <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrRecruitRequest">
+        <id column="request_id" property="requestId" jdbcType="VARCHAR"/>
+        <result column="initiator_id" property="initiatorId" jdbcType="VARCHAR"/>
+        <result column="initiator_examine" property="initiatorExamine" jdbcType="VARCHAR"/>
+        <result column="employer_approver_flow_id" property="employerApproverFlowId" jdbcType="VARCHAR"/>
+        <result column="personnel_approver_flow_id" property="personnelApproverFlowId" jdbcType="VARCHAR"/>
+        <result column="approver_state" property="approverState" jdbcType="VARCHAR"/>
+        <result column="processor_id" property="processorId" jdbcType="VARCHAR"/>
+        <result column="position_id" property="positionId" jdbcType="VARCHAR"/>
+        <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
+        <result column="plan_num" property="planNum" jdbcType="VARCHAR"/>
+        <result column="process_state" property="processState" jdbcType="VARCHAR"/>
+        <result column="backlog_num" property="backlogNum" jdbcType="VARCHAR"/>
+        <result column="preliminary_screening_num" property="preliminaryScreeningNum" jdbcType="VARCHAR"/>
+        <result column="already_interview_num" property="alreadyInterviewNum" jdbcType="VARCHAR"/>
+        <result column="already_offer_num" property="alreadyOfferNum" jdbcType="VARCHAR"/>
+        <result column="already_entry_num" property="alreadyEntryNum" jdbcType="VARCHAR"/>
+        <result column="weed_out_num" property="weedOutNum" jdbcType="VARCHAR"/>
+        <result column="complete_percent" property="completePercent" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="FlowMsgResultMap" type="com.system.recruit.entity.info.GetRecruitReqFlowMsgResp">
+        <result column="initiator_id" property="initiatorId" jdbcType="VARCHAR"/>
+        <result column="plan_num" property="planNum" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+        <association property="position" javaType="com.system.recruit.entity.HrPosition">
+            <id column="position_id" property="positionId" jdbcType="VARCHAR"/>
+            <result column="position_name" property="positionName" jdbcType="VARCHAR"/>
+            <result column="department_id" property="departmentId" jdbcType="VARCHAR"/>
+            <result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+            <result column="job_nature" property="jobNature" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    request_id, initiator_id, initiator_examine, employer_approver_flow_id, personnel_approver_flow_id,
+    approver_state, processor_id, position_id, start_time, plan_num, process_state, backlog_num,
+    preliminary_screening_num, already_interview_num, already_offer_num, already_entry_num,
+    weed_out_num, complete_percent, create_date, update_date
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from hr_recruit_request
+        where request_id = #{requestId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getByKeyState" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from hr_recruit_request a
+        where request_id = #{requestId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectFlowMsgById" resultMap="FlowMsgResultMap" parameterType="java.lang.String">
+    select
+    a.initiator_id,
+    a.initiator_examine,
+    a.plan_num,
+    a.create_date,
+    a.update_date,
+    b.position_id,
+    b.position_name,
+    b.department_id,
+    b.city_name,
+    b.job_nature
+    from hr_recruit_request a left join hr_position b
+    on a.position_id = b.position_id where request_id = #{requestId,jdbcType=VARCHAR}
+  </select>
+    <select id="selectByInitiatorId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from hr_recruit_request
+        where initiator_id = #{initiatorId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByCondition" resultMap="BaseResultMap"
+            parameterType="com.system.recruit.entity.GetHrRecruitReqCondition">
+        select
+        a.request_id as request_id,
+        a.initiator_id as initiator_id,
+        a.initiator_examine as initiator_examine,
+        a.employer_approver_flow_id as employer_approver_flow_id,
+        a.personnel_approver_flow_id as personnel_approver_flow_id,
+        a.approver_state as approver_state,
+        a.processor_id as processor_id,
+        a.position_id as position_id,
+        a.start_time as start_time,
+        a.plan_num as plan_num,
+        a.process_state as process_state,
+        a.backlog_num as backlog_num,
+        a.preliminary_screening_num as preliminary_screening_num,
+        a.already_interview_num as already_interview_num,
+        a.already_offer_num as already_offer_num,
+        a.already_entry_num as already_entry_num,
+        a.weed_out_num as weed_out_num,
+        a.create_date as create_date,
+        a.update_date as update_date,
+        a.complete_percent as complete_percent
+        from hr_recruit_request a
+        <where>
+            <if test="initiatorId != null and initiatorId != '' ">
+                a.initiator_id = #{initiatorId,jdbcType=VARCHAR}
+            </if>
+        </where>
+        <!--from hr_recruit_request a , hr_ticket_flow_approval b
+        where a.request_id = b.request_id
+        <if TestController="initiatorId != null and initiatorId != '' ">
+            and b.initiator_id = #{initiatorId,jdbcType=VARCHAR}
+        </if>
+        <if TestController="approverState != null and approverState != '' ">
+            and a.approver_state = #{approverState,jdbcType=VARCHAR}
+        </if>
+        and b.approval_status != '1' group by a.request_id-->
+    </select>
+
+    <select id="selectByConditionToHr" resultMap="BaseResultMap" parameterType="list">
+        select
+        a.request_id as request_id,
+        a.initiator_id as initiator_id,
+        a.initiator_examine as initiator_examine,
+        a.employer_approver_flow_id as employer_approver_flow_id,
+        a.personnel_approver_flow_id as personnel_approver_flow_id,
+        a.approver_state as approver_state,
+        a.processor_id as processor_id,
+        a.position_id as position_id,
+        a.start_time as start_time,
+        a.plan_num as plan_num,
+        a.process_state as process_state,
+        a.backlog_num as backlog_num,
+        a.preliminary_screening_num as preliminary_screening_num,
+        a.already_interview_num as already_interview_num,
+        a.already_offer_num as already_offer_num,
+        a.already_entry_num as already_entry_num,
+        a.weed_out_num as weed_out_num,
+        a.create_date as create_date,
+        a.update_date as update_date,
+        a.complete_percent as complete_percent
+        from hr_recruit_request a , hr_position b
+        where a.position_id = b.position_id and b.department_id in
+        <foreach item="item" collection="departmentIds" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="state != null and state != '' ">
+            a.process_state = #{state,jdbcType=VARCHAR}
+        </if>
+        group by a.request_id
+    </select>
+    <!--<select id="selectByProcessorId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+      select
+      <include refid="Base_Column_List" />
+      from hr_recruit_request
+      where processor_id = #{processorId,jdbcType=VARCHAR} and a.process_state != '20'
+    </select>-->
+    <select id="selectByStaffId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from hr_recruit_request
+        where initiator_id = #{staffId,jdbcType=VARCHAR} or ( processor_id = #{staffId,jdbcType=VARCHAR})
+        <if test="state != null and state != '' ">
+            process_state = #{state,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from hr_recruit_request
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.system.recruit.entity.HrRecruitRequest">
+    insert into hr_recruit_request (request_id, initiator_id,initiator_examine, employer_approver_flow_id,
+      personnel_approver_flow_id, approver_state, processor_id,
+      position_id, start_time, plan_num,
+      process_state, backlog_num, preliminary_screening_num,
+      already_interview_num, already_offer_num, already_entry_num,
+      weed_out_num, create_date, update_date,
+      complete_percent)
+    values (#{requestId,jdbcType=VARCHAR}, #{initiatorId,jdbcType=VARCHAR}, #{initiatorExamine,jdbcType=VARCHAR}, #{employerApproverFlowId,jdbcType=VARCHAR},
+      #{personnelApproverFlowId,jdbcType=VARCHAR}, #{approverState,jdbcType=VARCHAR}, #{processorId,jdbcType=VARCHAR},
+      #{positionId,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, #{planNum,jdbcType=VARCHAR},
+      #{processState,jdbcType=VARCHAR}, #{backlogNum,jdbcType=VARCHAR}, #{preliminaryScreeningNum,jdbcType=VARCHAR},
+      #{alreadyInterviewNum,jdbcType=VARCHAR}, #{alreadyOfferNum,jdbcType=VARCHAR}, #{alreadyEntryNum,jdbcType=VARCHAR},
+      #{weedOutNum,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP},
+      #{completePercent,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.system.recruit.entity.HrRecruitRequest">
+        insert into hr_recruit_request
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="requestId != null">
+                request_id,
+            </if>
+            <if test="initiatorId != null">
+                initiator_id,
+            </if>
+            <if test="initiatorExamine != null">
+                initiator_examine,
+            </if>
+            <if test="employerApproverFlowId != null">
+                employer_approver_flow_id,
+            </if>
+            <if test="personnelApproverFlowId != null">
+                personnel_approver_flow_id,
+            </if>
+            <if test="approverState != null">
+                approver_state,
+            </if>
+            <if test="processorId != null">
+                processor_id,
+            </if>
+            <if test="positionId != null">
+                position_id,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="planNum != null">
+                plan_num,
+            </if>
+            <if test="processState != null">
+                process_state,
+            </if>
+            <if test="backlogNum != null">
+                backlog_num,
+            </if>
+            <if test="preliminaryScreeningNum != null">
+                preliminary_screening_num,
+            </if>
+            <if test="alreadyInterviewNum != null">
+                already_interview_num,
+            </if>
+            <if test="alreadyOfferNum != null">
+                already_offer_num,
+            </if>
+            <if test="alreadyEntryNum != null">
+                already_entry_num,
+            </if>
+            <if test="weedOutNum != null">
+                weed_out_num,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="completePercent != null">
+                complete_percent,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="requestId != null">
+                #{requestId,jdbcType=VARCHAR},
+            </if>
+            <if test="initiatorId != null">
+                #{initiatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="initiatorExamine != null">
+                #{initiatorExamine,jdbcType=VARCHAR},
+            </if>
+            <if test="employerApproverFlowId != null">
+                #{employerApproverFlowId,jdbcType=VARCHAR},
+            </if>
+            <if test="personnelApproverFlowId != null">
+                #{personnelApproverFlowId,jdbcType=VARCHAR},
+            </if>
+            <if test="approverState != null">
+                #{approverState,jdbcType=VARCHAR},
+            </if>
+            <if test="processorId != null">
+                #{processorId,jdbcType=VARCHAR},
+            </if>
+            <if test="positionId != null">
+                #{positionId,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="planNum != null">
+                #{planNum,jdbcType=VARCHAR},
+            </if>
+            <if test="processState != null">
+                #{processState,jdbcType=VARCHAR},
+            </if>
+            <if test="backlogNum != null">
+                #{backlogNum,jdbcType=VARCHAR},
+            </if>
+            <if test="preliminaryScreeningNum != null">
+                #{preliminaryScreeningNum,jdbcType=VARCHAR},
+            </if>
+            <if test="alreadyInterviewNum != null">
+                #{alreadyInterviewNum,jdbcType=VARCHAR},
+            </if>
+            <if test="alreadyOfferNum != null">
+                #{alreadyOfferNum,jdbcType=VARCHAR},
+            </if>
+            <if test="alreadyEntryNum != null">
+                #{alreadyEntryNum,jdbcType=VARCHAR},
+            </if>
+            <if test="weedOutNum != null">
+                #{weedOutNum,jdbcType=VARCHAR},
+            </if>
+            <if test="completePercent != null">
+                #{completePercent,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrRecruitRequest">
+        update hr_recruit_request
+        <set>
+            <if test="initiatorId != null">
+                initiator_id = #{initiatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="initiatorExamine != null">
+                initiator_examine = #{initiatorExamine,jdbcType=VARCHAR},
+            </if>
+            <if test="employerApproverFlowId != null">
+                employer_approver_flow_id = #{employerApproverFlowId,jdbcType=VARCHAR},
+            </if>
+            <if test="personnelApproverFlowId != null">
+                personnel_approver_flow_id = #{personnelApproverFlowId,jdbcType=VARCHAR},
+            </if>
+            <if test="approverState != null">
+                approver_state = #{approverState,jdbcType=VARCHAR},
+            </if>
+            <if test="processorId != null">
+                processor_id = #{processorId,jdbcType=VARCHAR},
+            </if>
+            <if test="positionId != null">
+                position_id = #{positionId,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="planNum != null">
+                plan_num = #{planNum,jdbcType=VARCHAR},
+            </if>
+            <if test="processState != null">
+                process_state = #{processState,jdbcType=VARCHAR},
+            </if>
+            <if test="backlogNum != null">
+                backlog_num = #{backlogNum,jdbcType=VARCHAR},
+            </if>
+            <if test="preliminaryScreeningNum != null">
+                preliminary_screening_num = #{preliminaryScreeningNum,jdbcType=VARCHAR},
+            </if>
+            <if test="alreadyInterviewNum != null">
+                already_interview_num = #{alreadyInterviewNum,jdbcType=VARCHAR},
+            </if>
+            <if test="alreadyOfferNum != null">
+                already_offer_num = #{alreadyOfferNum,jdbcType=VARCHAR},
+            </if>
+            <if test="alreadyEntryNum != null">
+                already_entry_num = #{alreadyEntryNum,jdbcType=VARCHAR},
+            </if>
+            <if test="weedOutNum != null">
+                weed_out_num = #{weedOutNum,jdbcType=VARCHAR},
+            </if>
+            <if test="completePercent != null">
+                complete_percent = #{completePercent,jdbcType=VARCHAR},
+            </if>
+            update_date = now()
+        </set>
+        where request_id = #{requestId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrRecruitRequest">
+    update hr_recruit_request
+    set initiator_id = #{initiatorId,jdbcType=VARCHAR},
+        initiator_examine = #{initiatorExamine,jdbcType=VARCHAR},
+      employer_approver_flow_id = #{employerApproverFlowId,jdbcType=VARCHAR},
+      personnel_approver_flow_id = #{personnelApproverFlowId,jdbcType=VARCHAR},
+      approver_state = #{approverState,jdbcType=VARCHAR},
+      processor_id = #{processorId,jdbcType=VARCHAR},
+      position_id = #{positionId,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      plan_num = #{planNum,jdbcType=VARCHAR},
+      process_state = #{processState,jdbcType=VARCHAR},
+      backlog_num = #{backlogNum,jdbcType=VARCHAR},
+      preliminary_screening_num = #{preliminaryScreeningNum,jdbcType=VARCHAR},
+      already_interview_num = #{alreadyInterviewNum,jdbcType=VARCHAR},
+      already_offer_num = #{alreadyOfferNum,jdbcType=VARCHAR},
+      already_entry_num = #{alreadyEntryNum,jdbcType=VARCHAR},
+      weed_out_num = #{weedOutNum,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      complete_percent = #{completePercent,jdbcType=VARCHAR}
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </update>
+    <update id="updateStateByKey" parameterType="string">
+    update hr_recruit_request
+    set process_state = #{processState,jdbcType=VARCHAR}
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrStageDetailsMapper">
+    <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrStageDetails">
+        <id column="stage_details_id" property="stageDetailsId" jdbcType="VARCHAR"/>
+        <result column="stage_id" property="stageId" jdbcType="VARCHAR"/>
+        <result column="apply_for_id" property="applyForId" jdbcType="VARCHAR"/>
+        <result column="stage_name" property="stageName" jdbcType="VARCHAR"/>
+        <result column="stage_type" property="stageType" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="VARCHAR"/>
+        <result column="processor_id" property="processorId" jdbcType="VARCHAR"/>
+        <result column="request_id" property="requestId" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="initiator_examine" property="initiatorExamine" jdbcType="VARCHAR"/>
+        <result column="operation_type" property="operationType" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    stage_details_id, stage_id, apply_for_id, stage_name, stage_type, state, processor_id, 
+    request_id, remark, sort,initiator_examine,operation_type, create_date, update_date
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from hr_stage_details
+        where stage_details_id = #{stageDetailsId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByType" resultType="com.system.recruit.entity.HrStageDetails"
+            parameterType="com.system.recruit.entity.info.GetHrStageDetailsReq">
+        select
+        <include refid="Base_Column_List"/>
+        from hr_stage_details
+        where apply_for_id = #{applyForId,jdbcType=VARCHAR} and stage_type = #{stageType,jdbcType=VARCHAR} order by sort
+    </select>
+    <select id="selectByApplyForId" resultType="com.system.recruit.entity.HrStageDetails" parameterType="string">
+        select
+        <include refid="Base_Column_List"/>
+        from hr_stage_details
+        where apply_for_id = #{applyForId,jdbcType=VARCHAR} order by sort
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from hr_stage_details
+    where stage_details_id = #{stageDetailsId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.system.recruit.entity.HrStageDetails">
+    insert into hr_stage_details (stage_details_id, stage_id, apply_for_id,
+      stage_name, stage_type, state, 
+      processor_id, request_id, remark, 
+      sort,operation_type,initiator_examine ,create_date, update_date
+      )
+    values (#{stageDetailsId,jdbcType=VARCHAR}, #{stageId,jdbcType=VARCHAR}, #{applyForId,jdbcType=VARCHAR}, 
+      #{stageName,jdbcType=VARCHAR}, #{stageType,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+      #{processorId,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER},#{operationType,jdbcType=VARCHAR},#{initiatorExamine,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <!--<insert id="insertList" parameterType="list">
+        insert into hr_stage_details (
+        stage_details_id,
+        stage_id,
+        apply_for_id,
+        stage_name,
+        stage_type,
+        state,
+        processor_id,
+        request_id,
+        sort,
+        operation_type,
+        initiator_examine)
+        VALUES
+        <foreach collection="hrStageDetails" item="emp" separator=",">
+            (#{emp.stageDetailsId,jdbcType=VARCHAR},
+            #{emp.stageId,jdbcType=VARCHAR},
+            #{emp.applyForId,jdbcType=VARCHAR},
+            #{emp.stageName,jdbcType=VARCHAR},
+            #{emp.stageType,jdbcType=VARCHAR},
+            #{emp.state,jdbcType=VARCHAR},
+            #{emp.processorId,jdbcType=VARCHAR},
+            #{emp.requestId,jdbcType=VARCHAR},
+            #{emp.sort,jdbcType=VARCHAR},
+            #{emp.operationType,jdbcType=VARCHAR},
+            #{emp.initiatorExamine,jdbcType=VARCHAR})
+        </foreach>
+    </insert>-->
+    <insert id="insertSelective" parameterType="com.system.recruit.entity.HrStageDetails">
+        insert into hr_stage_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stageDetailsId != null">
+                stage_details_id,
+            </if>
+            <if test="stageId != null">
+                stage_id,
+            </if>
+            <if test="applyForId != null">
+                apply_for_id,
+            </if>
+            <if test="stageName != null">
+                stage_name,
+            </if>
+            <if test="stageType != null">
+                stage_type,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="processorId != null">
+                processor_id,
+            </if>
+            <if test="requestId != null">
+                request_id,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="operationType != null">
+                operation_type,
+            </if>
+            <if test="initiatorExamine != null">
+                initiator_examine,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stageDetailsId != null">
+                #{stageDetailsId,jdbcType=VARCHAR},
+            </if>
+            <if test="stageId != null">
+                #{stageId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyForId != null">
+                #{applyForId,jdbcType=VARCHAR},
+            </if>
+            <if test="stageName != null">
+                #{stageName,jdbcType=VARCHAR},
+            </if>
+            <if test="stageType != null">
+                #{stageType,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="processorId != null">
+                #{processorId,jdbcType=VARCHAR},
+            </if>
+            <if test="requestId != null">
+                #{requestId,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="operationType != null">
+                #{operationType,jdbcType=VARCHAR},
+            </if>
+            <if test="initiatorExamine != null">
+                #{initiatorExamine,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertList" parameterType="java.util.List">
+        insert into hr_stage_details (stage_details_id,
+        stage_id,
+        apply_for_id,
+        stage_name,
+        stage_type,
+        state,
+        processor_id,
+        request_id,
+        sort,
+        operation_type,
+        initiator_examine) VALUES
+        <foreach collection="hrStageDetails" item="emp" index="index" separator=",">
+            (#{emp.stageDetailsId,jdbcType=VARCHAR},
+            #{emp.stageId,jdbcType=VARCHAR},
+            #{emp.applyForId,jdbcType=VARCHAR},
+            #{emp.stageName,jdbcType=VARCHAR},
+            #{emp.stageType,jdbcType=VARCHAR},
+            #{emp.state,jdbcType=VARCHAR},
+            #{emp.processorId,jdbcType=VARCHAR},
+            #{emp.requestId,jdbcType=VARCHAR},
+            #{emp.sort,jdbcType=INTEGER},
+            #{emp.operationType,jdbcType=VARCHAR},
+            #{emp.initiatorExamine,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrStageDetails">
+        update hr_stage_details
+        <set>
+            <if test="stageId != null">
+                stage_id = #{stageId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyForId != null">
+                apply_for_id = #{applyForId,jdbcType=VARCHAR},
+            </if>
+            <if test="stageName != null">
+                stage_name = #{stageName,jdbcType=VARCHAR},
+            </if>
+            <if test="stageType != null">
+                stage_type = #{stageType,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="processorId != null">
+                processor_id = #{processorId,jdbcType=VARCHAR},
+            </if>
+            <if test="requestId != null">
+                request_id = #{requestId,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null and sort != 0">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="operationType != null">
+                operation_type = #{operationType,jdbcType=VARCHAR},
+            </if>
+            <if test="initiatorExamine != null">
+                initiator_examine = #{initiatorExamine,jdbcType=VARCHAR},
+            </if>
+            update_date = NOW()
+        </set>
+        where stage_details_id = #{stageDetailsId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrStageDetails">
+    update hr_stage_details
+    set stage_id = #{stageId,jdbcType=VARCHAR},
+      apply_for_id = #{applyForId,jdbcType=VARCHAR},
+      stage_name = #{stageName,jdbcType=VARCHAR},
+      stage_type = #{stageType,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      processor_id = #{processorId,jdbcType=VARCHAR},
+      request_id = #{requestId,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      operation_type = #{operationType,jdbcType=VARCHAR},
+      initiator_examine = #{initiatorExamine,jdbcType=VARCHAR},
+      update_date = NOW()
+    where stage_details_id = #{stageDetailsId,jdbcType=VARCHAR}
+  </update>
+</mapper>

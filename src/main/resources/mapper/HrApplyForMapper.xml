@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrApplyForMapper" >
+  <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrApplyFor" >
+    <id column="apply_for_id" property="applyForId" jdbcType="VARCHAR" />
+    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="VARCHAR" />
+    <result column="resume_id" property="resumeId" jdbcType="VARCHAR" />
+    <result column="initiator_id" property="initiatorId" jdbcType="VARCHAR" />
+    <result column="processor_id" property="processorId" jdbcType="VARCHAR" />
+    <result column="state_id" property="stateId" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    apply_for_id, request_id, position_id, resume_id, initiator_id, processor_id, state_id, 
+    create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from hr_apply_for
+    where apply_for_id = #{applyForId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByRequestIdState" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_apply_for
+    where request_Id = #{requestId,jdbcType=VARCHAR}
+     <if test="stateId != null and stateId != '' ">
+       and state_id = #{stateId,jdbcType=VARCHAR}
+     </if>
+  </select>
+  <select id="getCloseByRequestId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_apply_for
+    where request_Id = #{requestId,jdbcType=VARCHAR}
+       and state_id not in ('17','18')
+  </select>
+  <select id="selectAllByRequestId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_apply_for
+    where request_Id = #{requestId,jdbcType=VARCHAR}
+  </select>
+  <select id="getBadNumByReqId" resultType="int" parameterType="java.lang.String" >
+    select
+    count(1)
+    from hr_apply_for
+    where request_Id = #{requestId,jdbcType=VARCHAR} and state_id = '17'
+  </select>
+  <select id="getAllNumByReqId" resultType="int" parameterType="java.lang.String" >
+    select
+    count(1)
+    from hr_apply_for
+    where request_Id = #{requestId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hr_apply_for
+    where apply_for_id = #{applyForId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByState" parameterType="java.lang.String" >
+    delete from hr_apply_for
+    where request_id = #{requestId,jdbcType=VARCHAR} and state_id = '16'
+  </delete>
+  <insert id="insert" parameterType="com.system.recruit.entity.HrApplyFor" >
+    insert into hr_apply_for (apply_for_id, request_id, position_id, 
+      resume_id, initiator_id, processor_id, 
+      state_id, create_date, update_date
+      )
+    values (#{applyForId,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{positionId,jdbcType=VARCHAR}, 
+      #{resumeId,jdbcType=VARCHAR}, #{initiatorId,jdbcType=VARCHAR}, #{processorId,jdbcType=VARCHAR}, 
+      #{stateId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertList" parameterType="list" >
+    insert into hr_apply_for (apply_for_id, request_id, position_id
+    , initiator_id, processor_id,state_id
+      )
+    values
+    <foreach collection="hrApplyForList" item="emp" separator=",">
+      (#{emp.applyForId,jdbcType=VARCHAR}, #{emp.requestId,jdbcType=VARCHAR}, #{emp.positionId,jdbcType=VARCHAR},
+      #{emp.initiatorId,jdbcType=VARCHAR}, #{emp.processorId,jdbcType=VARCHAR},
+      #{emp.stateId,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.system.recruit.entity.HrApplyFor" >
+    insert into hr_apply_for
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="applyForId != null" >
+        apply_for_id,
+      </if>
+      <if test="requestId != null" >
+        request_id,
+      </if>
+      <if test="positionId != null" >
+        position_id,
+      </if>
+      <if test="resumeId != null" >
+        resume_id,
+      </if>
+      <if test="initiatorId != null" >
+        initiator_id,
+      </if>
+      <if test="processorId != null" >
+        processor_id,
+      </if>
+      <if test="stateId != null" >
+        state_id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="applyForId != null" >
+        #{applyForId,jdbcType=VARCHAR},
+      </if>
+      <if test="requestId != null" >
+        #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeId != null" >
+        #{resumeId,jdbcType=VARCHAR},
+      </if>
+      <if test="initiatorId != null" >
+        #{initiatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="processorId != null" >
+        #{processorId,jdbcType=VARCHAR},
+      </if>
+      <if test="stateId != null" >
+        #{stateId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrApplyFor" >
+    update hr_apply_for
+    <set >
+      <if test="requestId != null" >
+        request_id = #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        position_id = #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeId != null" >
+        resume_id = #{resumeId,jdbcType=VARCHAR},
+      </if>
+      <if test="initiatorId != null" >
+        initiator_id = #{initiatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="processorId != null" >
+        processor_id = #{processorId,jdbcType=VARCHAR},
+      </if>
+      <if test="stateId != null" >
+        state_id = #{stateId,jdbcType=VARCHAR},
+      </if>
+        update_date = NOW()
+    </set>
+    where apply_for_id = #{applyForId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrApplyFor" >
+    update hr_apply_for
+    set request_id = #{requestId,jdbcType=VARCHAR},
+      position_id = #{positionId,jdbcType=VARCHAR},
+      resume_id = #{resumeId,jdbcType=VARCHAR},
+      initiator_id = #{initiatorId,jdbcType=VARCHAR},
+      processor_id = #{processorId,jdbcType=VARCHAR},
+      state_id = #{stateId,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where apply_for_id = #{applyForId,jdbcType=VARCHAR}
+  </update>
+</mapper>

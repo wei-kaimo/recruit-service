@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrWorkExperienceMapper" >
+  <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrWorkExperience" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="resume_id" property="resumeId" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="position_name" property="positionName" jdbcType="VARCHAR" />
+    <result column="job_description" property="jobDescription" jdbcType="VARCHAR" />
+    <result column="project_experience" property="projectExperience" jdbcType="VARCHAR" />
+    <result column="project_num" property="projectNum" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, resume_id, start_time, end_time, company_name, position_name, job_description, 
+    project_experience, project_num, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hr_work_experience
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hr_work_experience
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.system.recruit.entity.HrWorkExperience" >
+    insert into hr_work_experience (id, resume_id, start_time, 
+      end_time, company_name, position_name, 
+      job_description, project_experience, project_num, 
+      create_date, update_date)
+    values (#{id,jdbcType=INTEGER}, #{resumeId,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
+      #{endTime,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, #{positionName,jdbcType=VARCHAR}, 
+      #{jobDescription,jdbcType=VARCHAR}, #{projectExperience,jdbcType=VARCHAR}, #{projectNum,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertList" parameterType="list" >
+    insert into hr_work_experience (id, resume_id, start_time,
+      end_time, company_name, position_name,
+      job_description, project_experience, project_num)
+    values
+     <foreach collection="list" item="emp" separator=",">
+       (#{emp.id,jdbcType=INTEGER}, #{emp.resumeId,jdbcType=VARCHAR}, #{emp.startTime,jdbcType=VARCHAR},
+       #{emp.endTime,jdbcType=VARCHAR}, #{emp.companyName,jdbcType=VARCHAR}, #{emp.positionName,jdbcType=VARCHAR},
+       #{emp.jobDescription,jdbcType=VARCHAR}, #{emp.projectExperience,jdbcType=VARCHAR}, #{emp.projectNum,jdbcType=VARCHAR})
+     </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.system.recruit.entity.HrWorkExperience" >
+    insert into hr_work_experience
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="resumeId != null" >
+        resume_id,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="positionName != null" >
+        position_name,
+      </if>
+      <if test="jobDescription != null" >
+        job_description,
+      </if>
+      <if test="projectExperience != null" >
+        project_experience,
+      </if>
+      <if test="projectNum != null" >
+        project_num,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="resumeId != null" >
+        #{resumeId,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="positionName != null" >
+        #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobDescription != null" >
+        #{jobDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="projectExperience != null" >
+        #{projectExperience,jdbcType=VARCHAR},
+      </if>
+      <if test="projectNum != null" >
+        #{projectNum,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrWorkExperience" >
+    update hr_work_experience
+    <set >
+      <if test="resumeId != null" >
+        resume_id = #{resumeId,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="positionName != null" >
+        position_name = #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobDescription != null" >
+        job_description = #{jobDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="projectExperience != null" >
+        project_experience = #{projectExperience,jdbcType=VARCHAR},
+      </if>
+      <if test="projectNum != null" >
+        project_num = #{projectNum,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrWorkExperience" >
+    update hr_work_experience
+    set resume_id = #{resumeId,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      position_name = #{positionName,jdbcType=VARCHAR},
+      job_description = #{jobDescription,jdbcType=VARCHAR},
+      project_experience = #{projectExperience,jdbcType=VARCHAR},
+      project_num = #{projectNum,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

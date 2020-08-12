@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrTicketFlowApprovalMapper" >
+  <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrTicketFlowApproval" >
+    <id column="ticket_id" property="ticketId" jdbcType="VARCHAR" />
+    <result column="ticket_name" property="ticketName" jdbcType="VARCHAR" />
+    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+    <result column="initiator_id" property="initiatorId" jdbcType="VARCHAR" />
+    <result column="approver_id" property="approverId" jdbcType="VARCHAR" />
+    <result column="approval_status" property="approvalStatus" jdbcType="VARCHAR" />
+    <result column="approval_opinion" property="approvalOpinion" jdbcType="VARCHAR" />
+    <result column="ticket_type" property="ticketType" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ticket_id, request_id, initiator_id, approver_id, approval_status, approval_opinion,ticket_type,sort,
+    create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_ticket_flow_approval
+    where ticket_id = #{ticketId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByRequestIdType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    CONCAT(c.department_name,'流程审批') as ticket_name,
+    ticket_id, request_id, initiator_id, approver_id, approval_status, approval_opinion,ticket_type,sort,
+    create_date, update_date
+    from  hr_ticket_flow_approval a , hr_user_department b , hr_department c
+    where a.approver_id = b.user_id and b.department_id = c.department_id and a.request_id = #{requestId,jdbcType=VARCHAR}  and a.ticket_type = #{ticketType,jdbcType=VARCHAR} order by a.sort
+  </select>
+  <select id="selectByRequestId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_ticket_flow_approval
+    where request_id = #{requestId,jdbcType=VARCHAR} order by sort
+  </select>
+  <select id="selectByApproverId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_ticket_flow_approval
+    where approver_id = #{approverId,jdbcType=VARCHAR} and approval_status = #{approvalStatus,jdbcType=VARCHAR} order by create_date desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hr_ticket_flow_approval
+    where ticket_id = #{ticketId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.system.recruit.entity.HrTicketFlowApproval" >
+    insert into hr_ticket_flow_approval (ticket_id, request_id, initiator_id,
+      approver_id, approval_status, approval_opinion,ticket_type,sort
+      create_date, update_date)
+    values (#{ticketId,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{initiatorId,jdbcType=VARCHAR},
+      #{approverId,jdbcType=VARCHAR}, #{approvalStatus,jdbcType=VARCHAR}, #{approvalOpinion,jdbcType=VARCHAR},
+      #{ticketType,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.system.recruit.entity.HrTicketFlowApproval" >
+    insert into hr_ticket_flow_approval
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ticketId != null" >
+        ticket_id,
+      </if>
+      <if test="requestId != null" >
+        request_id,
+      </if>
+      <if test="initiatorId != null" >
+        initiator_id,
+      </if>
+      <if test="approverId != null" >
+        approver_id,
+      </if>
+      <if test="approvalStatus != null" >
+        approval_status,
+      </if>
+      <if test="approvalOpinion != null" >
+        approval_opinion,
+      </if>
+      <if test="ticketType != null" >
+        ticket_type,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ticketId != null" >
+        #{ticketId,jdbcType=VARCHAR},
+      </if>
+      <if test="requestId != null" >
+        #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="initiatorId != null" >
+        #{initiatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="approverId != null" >
+        #{approverId,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalStatus != null" >
+        #{approvalStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalOpinion != null" >
+        #{approvalOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketType != null" >
+        #{ticketType,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrTicketFlowApproval" >
+    update hr_ticket_flow_approval
+    <set >
+      <if test="requestId != null" >
+        request_id = #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="initiatorId != null" >
+        initiator_id = #{initiatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="approverId != null" >
+        approver_id = #{approverId,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalStatus != null" >
+        approval_status = #{approvalStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalOpinion != null" >
+        approval_opinion = #{approvalOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketType != null" >
+        ticket_type = #{ticketType,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ticket_id = #{ticketId,jdbcType=VARCHAR}
+  </update>
+  <!--and approver_id = #{approverId,jdbcType=VARCHAR}-->
+  <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrTicketFlowApproval" >
+    update hr_ticket_flow_approval
+    set request_id = #{requestId,jdbcType=VARCHAR},
+      initiator_id = #{initiatorId,jdbcType=VARCHAR},
+      approver_id = #{approverId,jdbcType=VARCHAR},
+      approval_status = #{approvalStatus,jdbcType=VARCHAR},
+      approval_opinion = #{approvalOpinion,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      ticket_type = #{ticketType,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER}
+    where ticket_id = #{ticketId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateStateByReqId" parameterType="com.system.recruit.entity.HrTicketFlowApproval" >
+    update hr_ticket_flow_approval
+    set approval_status = #{approvalStatus,jdbcType=VARCHAR},
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </update>
+</mapper>

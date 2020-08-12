@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrConfig" >
+    <id column="config_id" property="configId" jdbcType="INTEGER" />
+    <result column="config_name" property="configName" jdbcType="VARCHAR" />
+    <result column="config_type" property="configType" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="scope" property="scope" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    config_id, config_name, config_type, create_date, update_date , state ,scope
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_config
+    where config_id = #{configId,jdbcType=INTEGER} and state = '1'
+  </select>
+
+  <select id="selectByType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_config
+    where config_type = #{configType,jdbcType=VARCHAR} and state = '1' and scope = #{scope,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_config
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hr_config
+    where config_id = #{configId,jdbcType=INTEGER}
+  </delete>
+
+  <update id="deleteByKey" parameterType="java.lang.Integer" >
+    update hr_config set state = '0' where config_id = #{configId,jdbcType=INTEGER}
+  </update>
+  <insert id="insert" parameterType="com.system.recruit.entity.HrConfig" >
+    insert into hr_config (config_id, config_name, config_type,state,scope
+      create_date, update_date)
+    values (#{configId,jdbcType=INTEGER}, #{configName,jdbcType=VARCHAR}, #{configType,jdbcType=VARCHAR},
+    #{state,jdbcType=VARCHAR},#{scope,jdbcType=VARCHAR},
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.system.recruit.entity.HrConfig" >
+    insert into hr_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="configId != null" >
+        config_id,
+      </if>
+      <if test="configName != null" >
+        config_name,
+      </if>
+      <if test="configType != null" >
+        config_type,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="scope != null" >
+        scope,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="configId != null" >
+        #{configId,jdbcType=INTEGER},
+      </if>
+      <if test="configName != null" >
+        #{configName,jdbcType=VARCHAR},
+      </if>
+      <if test="configType != null" >
+        #{configType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="scope != null" >
+        #{scope,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertHrConfig" parameterType="com.system.recruit.entity.HrConfig" >
+    insert into hr_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="configName != null" >
+        config_name,
+      </if>
+      <if test="configType != null" >
+        config_type,
+      </if>
+      <if test="scope != null" >
+        scope,
+      </if>
+      state,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="configName != null" >
+        #{configName,jdbcType=VARCHAR},
+      </if>
+      <if test="configType != null" >
+        #{configType,jdbcType=VARCHAR},
+      </if>
+      <if test="scope != null" >
+        #{scope,jdbcType=VARCHAR},
+      </if>
+      '1',
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrConfig" >
+    update hr_config
+    <set >
+      <if test="configName != null" >
+        config_name = #{configName,jdbcType=VARCHAR},
+      </if>
+      <if test="configType != null" >
+        config_type = #{configType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="scope != null" >
+        scope = #{scope,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where config_id = #{configId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrConfig" >
+    update hr_config
+    set config_name = #{configName,jdbcType=VARCHAR},
+      config_type = #{configType,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where config_id = #{configId,jdbcType=INTEGER}
+  </update>
+</mapper>

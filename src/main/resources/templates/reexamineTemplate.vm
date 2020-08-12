@@ -1,0 +1,61 @@
+<html>
+
+<body>
+<div style="width:900px;">
+    <p>
+        <img class="" src="http://49.235.189.36:9000/模板2.png" style="width: 900px">
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <strong><span style="font-size:15px;color:#0B0B0B;">${name}：</span></strong>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;您好！</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;首先恭喜您通过了我司的${stageName}！通过对您职业背景、专业技能以及行业经验的综合评估，</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;您比较符合我司${positionName}职位招聘要求。为了进一步促进双方了解，滋诚邀请您与
+            ${interviewTime}准时前往我司参加${nextStage}。（注意：请提前电话预约负责人，并携带个人简历一份，谢谢！）</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;如不能准时到达请致电人事部：${phone}或直接回复邮件告知，以便我们重新安排面试时间。谢谢配合！</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <strong><span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;具体联系方式如下：</span></strong>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;<strong>地址：</strong>${address}</span>
+    </p>
+    #*<p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;温馨提示：（附近建筑：——）</span>
+    </p>*#
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;公交车站：${busRoutes}</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;地铁站：${subwayRoutes}</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp;&nbsp;&nbsp;&nbsp;如果不清楚线路可到高德地图查询线路。</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:justify;">
+	<span style="font-size:15px;color:#0B0B0B;"><br>
+</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:right;">
+        <span style="font-size:15px;color:#0B0B0B;">&nbsp; &nbsp;杭州旗捷科技有限公司人力资源部</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:right;">
+        <span style="font-size:15px;color:#0B0B0B;">日期：${currentTime}</span>
+    </p>
+    <p style="margin-left:0.5em;text-align:right;">
+        <span style="font-size:15px;color:#0B0B0B;">公司电话：${tel}</span>
+    </p>
+    <p style="text-align:justify;margin-left:0.5em;">
+        <span style="font-size:15px;"></span>
+    </p>
+</div>
+</body>
+
+</html>

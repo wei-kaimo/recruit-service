@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrFlowConfigRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrFlowConfigRecord" >
+    <id column="request_id" property="requestId" jdbcType="VARCHAR" />
+    <result column="stage_id" property="stageId" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="VARCHAR" />
+    <result column="stage_name" property="stageName" jdbcType="VARCHAR" />
+    <result column="stage_type" property="stageType" jdbcType="VARCHAR" />
+    <result column="operation_type" property="operationType" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="OldBaseResultMap" type="com.system.recruit.entity.HrFlowConfig" >
+    <result column="stage_id" property="stageId" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="VARCHAR" />
+    <result column="stage_name" property="stageName" jdbcType="VARCHAR" />
+    <result column="stage_type" property="stageType" jdbcType="VARCHAR" />
+    <result column="operation_type" property="operationType" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    request_id, stage_id, position_id, stage_name, stage_type, operation_type, sort, create_date, update_date
+  </sql>
+  <sql id="Old_Base_Column_List" >
+    stage_id, position_id, stage_name, stage_type, operation_type, sort, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from hr_flow_config_record
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hr_flow_config_record
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.system.recruit.entity.HrFlowConfigRecord" >
+    insert into hr_flow_config_record (request_id, stage_id, position_id,
+      stage_name, stage_type,operation_type, sort,
+      create_date, update_date)
+    values (#{requestId,jdbcType=VARCHAR}, #{stageId,jdbcType=VARCHAR}, #{positionId,jdbcType=VARCHAR},
+      #{stageName,jdbcType=VARCHAR}, #{stageType,jdbcType=VARCHAR}, #{operationType,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertList" parameterType="list" >
+    insert into hr_flow_config_record (request_id, stage_id, position_id,
+      stage_name, stage_type, operation_type, sort,
+      create_date, update_date)
+    values
+    <foreach collection="hrFlowConfigRecords" item="emp" separator=",">
+      (#{emp.requestId,jdbcType=VARCHAR}, #{emp.stageId,jdbcType=VARCHAR}, #{emp.positionId,jdbcType=VARCHAR},
+      #{emp.stageName,jdbcType=VARCHAR}, #{emp.stageType,jdbcType=VARCHAR}, #{emp.operationType,jdbcType=VARCHAR}, #{emp.sort,jdbcType=INTEGER},
+      #{emp.createDate,jdbcType=TIMESTAMP}, #{emp.updateDate,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.system.recruit.entity.HrFlowConfigRecord" >
+    insert into hr_flow_config_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="requestId != null" >
+        request_id,
+      </if>
+      <if test="stageId != null" >
+        stage_id,
+      </if>
+      <if test="positionId != null" >
+        position_id,
+      </if>
+      <if test="stageName != null" >
+        stage_name,
+      </if>
+      <if test="stageType != null" >
+        stage_type,
+      </if>
+      <if test="operationType != null" >
+        operation_type,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="requestId != null" >
+        #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="stageId != null" >
+        #{stageId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="stageName != null" >
+        #{stageName,jdbcType=VARCHAR},
+      </if>
+      <if test="stageType != null" >
+        #{stageType,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null" >
+        #{operationType,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrFlowConfigRecord" >
+    update hr_flow_config_record
+    <set >
+      <if test="stageId != null" >
+        stage_id = #{stageId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        position_id = #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="stageName != null" >
+        stage_name = #{stageName,jdbcType=VARCHAR},
+      </if>
+      <if test="stageType != null" >
+        stage_type = #{stageType,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null" >
+        operation_ype = #{operationType,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+        update_date = NOW()
+    </set>
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrFlowConfigRecord" >
+    update hr_flow_config_record
+    set stage_id = #{stageId,jdbcType=VARCHAR},
+      position_id = #{positionId,jdbcType=VARCHAR},
+      stage_name = #{stageName,jdbcType=VARCHAR},
+      stage_type = #{stageType,jdbcType=VARCHAR},
+      operation_type = #{operationType,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByPositionId" resultMap="OldBaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Old_Base_Column_List" />
+    from hr_flow_config_record
+    where request_id = #{requestId,jdbcType=VARCHAR} and position_id = #{positionId,jdbcType=VARCHAR} order by sort
+  </select>
+</mapper>

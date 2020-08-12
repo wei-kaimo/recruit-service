@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.recruit.dao.HrSysConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.system.recruit.entity.HrSysConfig" >
+    <id column="sys_config_name" property="sysConfigName" jdbcType="VARCHAR" />
+    <result column="sys_config_content" property="sysConfigContent" jdbcType="VARCHAR" />
+    <result column="sys_config_state" property="sysConfigState" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sys_config_name, sys_config_content, sys_config_state, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultType="java.lang.String" parameterType="java.lang.String" >
+    select
+    sys_config_content
+    from hr_sys_config
+    where sys_config_name = #{sysConfigName,jdbcType=VARCHAR} and sys_config_state = '1'
+  </select>
+  <select id="getAllByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hr_sys_config
+    where sys_config_state = '1'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hr_sys_config
+    where sys_config_name = #{sysConfigName,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.system.recruit.entity.HrSysConfig" >
+    insert into hr_sys_config (sys_config_name, sys_config_content, 
+      sys_config_state, create_date, update_date
+      )
+    values (#{sysConfigName,jdbcType=VARCHAR}, #{sysConfigContent,jdbcType=VARCHAR}, 
+      #{sysConfigState,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.system.recruit.entity.HrSysConfig" >
+    insert into hr_sys_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sysConfigName != null" >
+        sys_config_name,
+      </if>
+      <if test="sysConfigContent != null" >
+        sys_config_content,
+      </if>
+      <if test="sysConfigState != null" >
+        sys_config_state,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sysConfigName != null" >
+        #{sysConfigName,jdbcType=VARCHAR},
+      </if>
+      <if test="sysConfigContent != null" >
+        #{sysConfigContent,jdbcType=VARCHAR},
+      </if>
+      <if test="sysConfigState != null" >
+        #{sysConfigState,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.recruit.entity.HrSysConfig" >
+    update hr_sys_config
+    <set >
+      <if test="sysConfigContent != null" >
+        sys_config_content = #{sysConfigContent,jdbcType=VARCHAR},
+      </if>
+      <if test="sysConfigState != null" >
+        sys_config_state = #{sysConfigState,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where sys_config_name = #{sysConfigName,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.system.recruit.entity.HrSysConfig" >
+    update hr_sys_config
+    set sys_config_content = #{sysConfigContent,jdbcType=VARCHAR},
+      sys_config_state = #{sysConfigState,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where sys_config_name = #{sysConfigName,jdbcType=VARCHAR}
+  </update>
+</mapper>
